@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carlfonsos-Adventskalender</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(#c62828, #7b1f1f);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      padding: 2rem 1rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    .day {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 1.5rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .day:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+    #day-content {
+      display: none;
+      margin-top: 2rem;
+      padding: 2rem;
+    }
+    .download-btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.6rem;
+      background: #fff;
+      color: #b71c1c;
+      font-weight: bold;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: 0.2s;
+    }
+    .download-btn:hover {
+      background: #ffecec;
+    }
+      .side-sticker {
+      position: fixed;
+      top: 50%;
+      width: 240px; /* doppelt so groß */
+      transform: translateY(-50%);
+      pointer-events: none;
+      opacity: 0.95;
+    }
+    .left-sticker {
+      left: 80px; /* weiter zur Mitte */
+    }
+    .right-sticker {
+      right: 80px; /* weiter zur Mitte */
+    }
+      .back-btn {
+      background: #fff;
+      color: #b71c1c;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      transition: 0.2s;
+    }
+    .back-btn:hover {
+      background: #ffecec;
+    }
+      /* --- Mobile Version Optimierung --- */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      .calendar-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 0.7rem;
+        padding: 1rem;
+      }
+      .day {
+        padding: 1rem;
+        font-size: 1.2rem;
+      }
+      #day-content {
+        padding: 1rem;
+      }
+      .download-btn {
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
+      }
+      .back-btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+      }
+      /* Sticker auf Mobile kleiner & weiter oben */
+      .side-sticker {
+        width: 120px;
+        top: 60%;
+        opacity: 0.85;
+      }
+      .left-sticker {
+        left: -10px;
+      }
+      .right-sticker {
+        right: -10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎄 Carlfonsos-Adventskalender 🎄</h1>
+    <p>Öffne jeden Tag ein neues Türchen für eine kleine Idee </p>
+  </header>
+
+  <div id="calendar" class="calendar-grid"></div>
+
+  <div id="day-content">
+    <button id="back-btn" class="back-btn">⬅ Zurück zum Kalender</button>
+    <h2 id="day-title"></h2>
+    <a id="download-link" class="download-btn" href="#" download>PDF herunterladen</a>
+  </div>
+
+  <script>
+    // Generiere Kalender
+    const calendar = document.getElementById('calendar');
+    for (let i = 1; i <= 24; i++) {
+      const d = document.createElement('div');
+      d.className = 'day';
+      d.textContent = i;
+      d.onclick = () => openDay(i);
+      calendar.appendChild(d);
+    }
+
+    // Prüfe, ob QR-Code einen Day-Parameter hat z.B. ?day=5
+    const params = new URLSearchParams(window.location.search);
+    const qrDay = params.get('day');
+    if (qrDay) openDay(parseInt(qrDay));
+
+    function openDay(day) {
+      document.getElementById('calendar').style.display = 'none';
+      const content = document.getElementById('day-content');
+      const title = document.getElementById('day-title');
+      const link = document.getElementById('download-link');
+
+      title.textContent = `Türchen ${day}`;
+
+      // PDF-Pfad anpassen – hier später durch echte URLs ersetzen
+      link.href = `pdf/day${day}.pdf`;
+
+      content.style.display = 'block';
+      document.getElementById('back-btn').onclick = () => {
+        content.style.display = 'none';
+        document.getElementById('calendar').style.display = 'grid';
+      };
+    }
+  </script>
+  <img src="sticker.png" class="side-sticker left-sticker" />
+  <img src="sticker.png" class="side-sticker right-sticker" />
+</body>
+</html>
