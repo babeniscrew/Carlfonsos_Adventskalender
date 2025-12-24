@@ -169,7 +169,14 @@
       title.textContent = `Türchen ${day}`;
 
       // PDF-Pfad anpassen – hier später durch echte URLs ersetzen
-      link.href = `pdf/day${day}.pdf`;
+      if (day === 24) {
+  link.href = "pdf/day24.zip";
+  link.textContent = "Alle PDFs herunterladen (ZIP)";
+} else {
+  link.href = `pdf/day${day}.pdf`;
+  link.textContent = "PDF herunterladen";
+}
+
 
       content.style.display = 'block';
       document.getElementById('back-btn').onclick = () => {
